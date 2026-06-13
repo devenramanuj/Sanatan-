@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="gu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sanatan Grand Library - Test App</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 700px;
+            margin: 0 auto;
+            background: #1e1e1e;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(255, 115, 0, 0.2);
+            border: 1px solid #ff7300;
+        }
+        h1 { color: #ff7300; }
+        button {
+            background-color: #ff7300;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+        button:hover { background-color: #e06500; }
+        .output-box {
+            margin-top: 20px;
+            text-align: left;
+            background: #2d2d2d;
+            padding: 15px;
+            border-radius: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+            border-left: 5px solid #ff7300;
+            white-space: pre-wrap;
+            font-size: 15px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🏛️ સનાતન ગ્રાન્ડ લાઈબ્રેરી ટેસ્ટર</h1>
+    <p>આપણા 5 TB ક્લાઉડના ડેટાબેઝને એપ્લિકેશન સાથે લિંક કરીને ચેક કરો.</p>
+    
+    <!-- ફાઈલ સિલેક્ટ કરવા માટેનું બટન -->
+    <input type="file" id="jsonFileInput" accept=".json" style="display:none;">
+    <button onclick="document.getElementById('jsonFileInput').click()">📂 માસ્ટર JSON ફાઈલ લોડ કરો</button>
+
+    <div id="output" class="output-box">અહીં તમારો ફેચ થયેલો લાઈવ ડેટા દેખાશે...</div>
+</div>
+
+<script>
+    // ફાઈલ અપલોડ થાય ત્યારે રીડ કરવાનું લોજિક
+    document.getElementById('jsonFileInput').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            try {
+                // JSON ડેટા પાર્સ કરવો
+                const data = JSON.parse(e.target.result);
+                
+                // એપ્લિકેશનમાં ડેટા પ્રિન્ટ કરવો
+                let htmlOutput = `<strong>📋 લાઇબ્રેરી સ્ટેટસ:</strong> ${data.Library_Info.Status}\n`;
+                htmlOutput += `<strong>👤 ડેવલપર:</strong> ${data.Library_Info.Developer}\n\n`;
+                
+                htmlOutput += `<strong>🚩 શ્રીમદ્ ભગવદ્ ગીતા (પ્રથમ અધ્યાયનો પ્રથમ શ્લોક ટેસ્ટ):</strong>\n`;
+                const firstVerse = data.Bhagavad_Gita_Samagra.Chapters[0].Verses[0];
+                htmlOutput += `શ્લોક ${firstVerse.Verse_No}: ${firstVerse.Sanskrit}\n`;
+                htmlOutput += `અર્થ: ${firstVerse.Gujarati}\n\n`;
+
+                htmlOutput += `<strong>🔱 ઋગ્વેદ સંહિતા (પ્રથમ મંડળનો પ્રથમ શ્લોક ટેસ્ટ):</strong>\n`;
+                const firstMantra = data.Holy_Vedas_Complete_Verses.Rigveda_Samhita_Complete.Mandals_Data[0].Suktas[0].Mantras[0];
+                htmlOutput += `મંત્ર: ${firstMantra.Sanskrit}\n`;
+                htmlOutput += `અર્થ: ${firstMantra.Gujarati_Meaning}\n\n`;
+                
+                htmlOutput += `🤖 **AI પ્રોજેક્ટ કન્સ્ટ્રેઇન્ટ:** ${data.AI_Project_Core_Metadata.Humor_Constraint}`;
+
+                document.getElementById('output').innerHTML = htmlOutput;
+                alert("✅ ડેટાબેઝ એપ્લિકેશન સાથે સફળતાપૂર્વક લિંક થઈ ગયો છે!");
+            } catch (error) {
+                document.getElementById('output').innerText = "❌ ફાઈલ રીડ કરવામાં ભૂલ આવી: " + error.message;
+            }
+        };
+        reader.readAsText(file);
+    });
+</script>
+
+</body>
+</html>
